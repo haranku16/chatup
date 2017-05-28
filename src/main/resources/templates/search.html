@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ChatUp</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<form action="/logout">
+		<button>Log Out</button>
+	</form>
+	<a href="/"><h1 th:text="${user.getFirstname()}"/></a>
+	<form action="/search" method="post">
+		<input type="text" name="firstname" placeholder="first name"/> AND
+		<input type="text" name="lastname" placeholder="last name"/> OR
+		<input type="text" name="username" placeholder="username"/>
+		<button>Search</button>
+	</form>
+	<div th:if="${result}">
+		<h2>Results...</h2>
+		<table>
+			<tr th:each="res : ${result}">
+				<td th:text="${res.getUsername()}"/>
+				<td th:text="${res.getFirstname()}"/>
+				<td th:text="${res.getLastname()}"/>
+				<td><a th:if="${!user.getChats().keySet().contains(res.getUsername())}" th:href="@{/request(username=${res.getUsername()})}">Send Request</a></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ChatUp</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<form action="/login" method="post">
+		<input type="text" placeholder="username" name="username"/>
+		<input type="password" placeholder="password" name="password"/>
+		<button>Login</button>
+	</form>
+	<p style="color:red" th:text="${errorMessage}"/>
+	<a href="/register">Register</a>
+</body>
+</html>

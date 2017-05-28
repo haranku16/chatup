@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ChatUp</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script src="https://unpkg.com/vue"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.js"></script>
+</head>
+<body>
+	<script th:inline="javascript">
+		var user = {
+			username: /*[[${user.getUsername()}]]*/ '',
+			firstname: /*[[${user.getFirstname()}]]*/ '',
+			lastname: /*[[${user.getLastname()}]]*/ ''
+		};
+		var friend = {
+			username: /*[[${friend.getUsername()}]]*/ '',
+			firstname: /*[[${friend.getFirstname()}]]*/ '',
+			lastname: /*[[${friend.getLastname()}]]*/ ''
+		};
+	</script>
+	<form action="/logout">
+		<button>Log Out</button>
+	</form>
+	<a href="/"><h1 th:text='${"Hello "+user.getFirstname()+"!"}'/></a>
+	<h2 th:text='${"Chat with " + friend.getFirstname()}'/>
+	<div id="chat"></div>
+	<script src="js/chat.js"></script>
+</body>
+</html>

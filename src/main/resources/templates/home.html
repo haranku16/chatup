@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ChatUp</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<form action="/logout">
+		<button>Log Out</button>
+	</form>
+	<a href="/"><h1 th:text='${"Hello "+user.getFirstname()+"!"}'/></a>
+	<a href="/search">Search for Friends!</a>
+	<h2>Friends</h2>
+	<table>
+		<tr th:each="instance : ${user.getChats()}">
+			<td th:text="${instance.key}"/>
+			<td><a th:href="@{/chat(username=${instance.key})}">Chat</a></td>
+			<td><a th:href="@{/unfriend(username=${instance.key})}">Unfriend</a></td>
+		</tr>
+	</table>
+	<p th:if="${user.getChats().keySet().size() == 0}">None</p>
+	<h2>Requests</h2>
+	<table>
+		<tr th:each="request : ${user.getRequests()}">
+			<td th:text="${request}"/>
+			<td><a th:href="@{/accept(username=${request})}">Add Friend</a></td>
+			<td><a th:href="@{/reject(username=${request})}">Reject</a></td>
+		</tr>
+	</table>
+	<p th:if="${user.getRequests().size() == 0}">None</p>
+</body>
+</html>
