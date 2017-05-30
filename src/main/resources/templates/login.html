@@ -1,16 +1,18 @@
 <!DOCTYPE HTML>
-<html lang = "en">
+<html lang = "en" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <meta charset="utf-8">
-        <meta name="author" content="Ramaseshan Parthasarathy">
-        <meta name="description" content="chat application">
-        <meta name="msapplication-TileColor" content="#FFFFFF">
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8" />
+        <meta name="author" content="Ramaseshan Parthasarathy" />
+        <meta name="description" content="chat application" />
+        <meta name="msapplication-TileColor" content="#FFFFFF" />
         <meta name = "viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+    	<meta name="form_view" th:content="${form_view}" />
 
-        <title>Chattarang | Login </title>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+        <title>Chatarang | Login </title>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"/>
       <style>
         .login-page {
           width: 360px;
@@ -100,6 +102,9 @@
         .container .info span .fa {
           color: #EF3B3A;
         }
+        .error {
+       	  color: red;
+       	}
         body {
           background: #76b852; /* fallback for old browsers */
           background: -webkit-linear-gradient(right, #76b852, #8DC26F);
@@ -118,19 +123,21 @@
          <p align = "middle" style = "font-family: 'Pacifico', cursive; font-size: 50px; font-weight: bold; color: white; margin: 20px;">Chatarang!</p>
     <!--<img src = "chat-alt-flat.png" style = "height: 300px; width: 300px; padding-left: 30px;"/>-->
   <div class="form">
-    <form class="register-form">
-      <input type="text" placeholder="First Name"/>
-      <input type="text" placeholder="Last Name"/>
-      <input type="text" placeholder="Username"/>
-      <input type="password" placeholder="Password"/>
-      <input type = "password" placeholder = "Re-enter Password"/>
+    <form class="register-form" action="/register" method="post">
+      <input type="text" placeholder="First Name" name="firstname" th:value="${firstname}"/>
+      <input type="text" placeholder="Last Name" name="lastname" th:value="${lastname}"/>
+      <input type="text" placeholder="Username" name="username" th:value="${username}"/>
+      <input type="password" placeholder="Password" name="password"/>
+      <input type = "password" placeholder = "Re-enter Password" name="password_retype"/>
       <button>create</button>
+      <p th:text="${errorMessageR}" class="error" />
       <p class="message">Already registered? <a href="#">Sign In</a></p>
     </form>
-    <form class="login-form">
-      <input type="text" placeholder="Username"/>
-      <input type="password" placeholder="Password"/>
+    <form class="login-form" action="/login" method="post">
+      <input type="text" placeholder="Username" name="username" th:value="${username}"/>
+      <input type="password" placeholder="Password" name="password"/>
       <button>login</button>
+      <p th:text="${errorMessage}" class="error" />
       <p class="message">Not registered? <a href="#">Create an account</a></p>
     </form>
   </div>
@@ -141,49 +148,14 @@
 </body>
         
  <script>
-    $('.message a').click(function(){
-        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-    });
+ 	$(document).ready(function() {
+		var form_view = $('meta[name=form_view]').attr('content');
+		if (form_view == 'register') {
+			$('form').animate({height: "toggle", opacity: "toggle"}, "fast");
+		}
+ 	    $('.message a').click(function(){
+ 	        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+ 	    });
+ 	});
 </script>
 </html>
-
-<!-- login.html (base) -->
-<!--
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>ChatUp</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-	<form action="/login" method="post">
-		<input type="text" placeholder="username" name="username"/>
-		<input type="password" placeholder="password" name="password"/>
-		<button>Login</button>
-	</form>
-	<p style="color:red" th:text="${errorMessage}"/>
-	<a href="/register">Register</a>
-</body>
-</html> -->
-
-<!--register.html (base) -->
-<!-- 
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>ChatUp</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-	<form action="/register" method="post">
-		<input type="text" placeholder="first name" name="firstname" th:value="${firstname}"/>
-		<input type="text" placeholder="last name" name="lastname" th:value="${lastname}"/>
-		<input type="text" placeholder="username" name="username" th:value="${username}"/>
-		<input type="password" placeholder="password" name="password"/>
-		<input type="password" placeholder="retype password" name="password_retype"/>
-		<button>Register</button>
-	</form>
-	<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"/>
-	<a href="/login">Log In</a>
-</body>
-</html> -->

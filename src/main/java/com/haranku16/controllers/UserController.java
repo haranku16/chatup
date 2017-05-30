@@ -94,46 +94,52 @@ public class UserController {
 			return "home";
 		}
 		if (!ofMinLength(username,1)) {
-			model.addAttribute("errorMessage", "You haven't entered a username.");
+			model.addAttribute("errorMessageR", "You haven't entered a username.");
 			model.addAttribute("username",username);
 			model.addAttribute("firstname",firstname);
 			model.addAttribute("lastname",lastname);
-			return "register";
+			model.addAttribute("form_view", "register");
+			return "login";
 		}
 		if (!ofMinLength(password,8)) {
-			model.addAttribute("errorMessage", "The password must be at least 8 characters long.");
+			model.addAttribute("errorMessageR", "The password must be at least 8 characters long.");
 			model.addAttribute("username",username);
 			model.addAttribute("firstname",firstname);
 			model.addAttribute("lastname",lastname);
-			return "register";
+			model.addAttribute("form_view", "register");
+			return "login";
 		}
 		if (!ofMinLength(firstname,1)) {
-			model.addAttribute("errorMessage", "You haven't entered a first name.");
+			model.addAttribute("errorMessageR", "You haven't entered a first name.");
 			model.addAttribute("username",username);
 			model.addAttribute("firstname",firstname);
 			model.addAttribute("lastname",lastname);
-			return "register";
+			model.addAttribute("form_view", "register");
+			return "login";
 		}
 		if (!ofMinLength(lastname,1)) {
-			model.addAttribute("errorMessage", "You haven't entered a last name.");
+			model.addAttribute("errorMessageR", "You haven't entered a last name.");
 			model.addAttribute("username",username);
 			model.addAttribute("firstname",firstname);
 			model.addAttribute("lastname",lastname);
-			return "register";
+			model.addAttribute("form_view", "register");
+			return "login";
 		}
 		if (users.findByUsername(username) != null) {
-			model.addAttribute("errorMessage", "This username has been taken.");
+			model.addAttribute("errorMessageR", "This username has been taken.");
 			model.addAttribute("username",username);
 			model.addAttribute("firstname",firstname);
 			model.addAttribute("lastname",lastname);
-			return "register";
+			model.addAttribute("form_view", "register");
+			return "login";
 		}
 		if (!password.equals(retype)) {
-			model.addAttribute("errorMessage", "The passwords do not match.");
+			model.addAttribute("errorMessageR", "The passwords do not match.");
 			model.addAttribute("username",username);
 			model.addAttribute("firstname",firstname);
 			model.addAttribute("lastname",lastname);
-			return "register";
+			model.addAttribute("form_view", "register");
+			return "login";
 		}
 		user = new User();
 		user.setFirstname(firstname);
@@ -141,6 +147,7 @@ public class UserController {
 		user.setUsername(username);
 		user.setPassword(password);
 		users.save(user);
+		model.addAttribute("username", username);
 		return "login";
 	}
 	private boolean ofMinLength(String str, int length) {
