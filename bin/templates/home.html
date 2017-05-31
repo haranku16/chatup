@@ -1,32 +1,117 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang = "en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>ChatUp</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css"/>
+
+    <!--MDL Icons-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+    <style is = "custom-style">
+     nav{
+            background-color: #00e676;
+            background: #00e676;
+            border-color: #00e676;
+            height: 50px;
+            line-height: 50px;
+        }
+        nav .nav-wrapper a.brand-logo{
+           padding-left: 10px;
+        }
+        @media only screen and (min-width: 601px){
+            nav, nav .nav-wrapper i{
+                height: 50px;
+                line-height: 50px;
+            }
+        }
+        
+        .material-icons {
+          font-family: 'Material Icons';
+          font-weight: normal;
+          font-style: normal;
+          font-size: 28px;  /* Preferred icon size */
+          display: inline-block;
+          line-height: 1;
+          text-transform: none;
+          letter-spacing: normal;
+          word-wrap: normal;
+          white-space: nowrap;
+          direction: ltr;
+
+          -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeLegibility;
+          -moz-osx-font-smoothing: grayscale;
+          font-feature-settings: 'liga';
+        }
+        
+        .dropdown-content {
+          background-color: #FFFFFF;
+          margin: 0;
+          display: none;
+          min-width: 300px; /* Changed this to accomodate content width */
+          max-height: auto;
+            margin-left: -1px; /* Add this to keep dropdown in line with edge of navbar */
+          overflow: hidden; /* Changed this from overflow-y:auto; to overflow:hidden; */
+          opacity: 0;
+          position: absolute;
+          white-space: nowrap;
+          z-index: 1;
+          will-change: width, height;
+        }
+        
+        .collection .collection-item { overflow: hidden; }
+    </style>
+    
+    </head>
 <body>
-	<form action="/logout">
-		<button>Log Out</button>
-	</form>
-	<a href="/"><h1 th:text='${"Hello "+user.getFirstname()+"!"}'/></a>
-	<a href="/search">Search for Friends!</a>
-	<h2>Friends</h2>
-	<table>
-		<tr th:each="instance : ${user.getChats()}">
-			<td th:text="${instance.key}"/>
-			<td><a th:href="@{/chat(username=${instance.key})}">Chat</a></td>
-			<td><a th:href="@{/unfriend(username=${instance.key})}">Unfriend</a></td>
-		</tr>
-	</table>
-	<p th:if="${user.getChats().keySet().size() == 0}">None</p>
-	<h2>Requests</h2>
-	<table>
-		<tr th:each="request : ${user.getRequests()}">
-			<td th:text="${request}"/>
-			<td><a th:href="@{/accept(username=${request})}">Add Friend</a></td>
-			<td><a th:href="@{/reject(username=${request})}">Reject</a></td>
-		</tr>
-	</table>
-	<p th:if="${user.getRequests().size() == 0}">None</p>
-</body>
+    <nav>
+        <div class="nav-wrapper">
+          <a href="/" class="brand-logo" th:text='${user.getFirstname() + " " + user.getLastname()}'/>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="#" class="waves-effect waves-light btn" style = "background-color: #00e676"><i class="material-icons">settings</i></a></li>
+            <li><a href = "#" style = "background-color: #00e676" class = "waves-effect waves-light dropdown-button btn" data-activates = "dropdown1" data-beloworigin="true"><i class="material-icons" style = "font-size: 35px;">people</i></a></li>
+            <li><a href="/search" class="waves-effect waves-light btn" style = "background-color: #00e676"><i class="material-icons">search</i></a></li>
+            <li><a href="/logout" class="waves-effect waves-light green accent-4 btn">Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+    
+     <!-- Dropdown Structure -->
+  <ul th:if="${user.getRequests().size() > 0}" id="dropdown1" class="dropdown-content collection">
+		<li th:each="request : ${user.getRequests()}" class="collection-item avatar">
+				<i class="material-icons circle orange">person</i>
+				<span class="title" th:text="${request}"/>
+				<a th:href="@{/accept(username=${request})}" class="secondary-content"><i class="material-icons" style = "color: #00e676;">person_add</i></a>
+             &nbsp;<a th:href="@{/reject(username=${request})}" class="secondary-content2" style = "display: inline-block; margin-left: 128px;"><i class="material-icons" style = "color: red;">not_interested</i></a>
+		</li>
+</ul>
+<ul th:unless="${user.getRequests().size() > 0}" id="dropdown1" class="dropdown-content collection"><li><span class="title">No requests :(</span></li></ul>
+        
+    <ul class="collection" th:each="friendDateTuple : ${friendDateTuples}">
+    <li class="collection-item avatar">
+      <i class="material-icons circle blue">person</i>
+      <span class="title" style = "font-weight: bold;" th:text="${friendDateTuple.getFriend().getFullname()}"/>
+      <p th:text='${friendDateTuple.getDate()}'/>
+       <a th:href="@{/chat(username=${friendDateTuple.getFriend().getUsername()})}" class="secondary-content"><i class="material-icons" style = "color: #00e676;">message</i></a>
+        <a th:href="@{/unfriend(username=${friendDateTuple.getFriend().getUsername()})}" class="secondary-content2" style = "float: right;"><i class="material-icons" style = "color: red;">do_not_disturb_on</i></a>
+    </li>
+  </ul>
+    
+
+    <!--import jQuery-->
+    <script type = "text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/core.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>  
+
+    <script>
+        $(document).ready(function(){
+            $('.dropdown-button').dropdown({
+                hover: false
+            });
+        });
+    </script>
+    </body> 
 </html>

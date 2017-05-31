@@ -1,7 +1,10 @@
 package com.haranku16.controllers;
 
+import java.io.IOException;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +29,7 @@ public class RequestController {
 	@RequestMapping(path="/request", method=RequestMethod.GET)
 	public String request(Model model, 
 			@RequestParam("username") String username, 
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Cookie[] cookies = request.getCookies();
 		User user = CookieController.getInstance().getUser(cookies, users);
 		if (user == null) {
@@ -36,6 +39,7 @@ public class RequestController {
 		if (requested != null) {
 			requested.getRequests().add(user.getUsername());
 		}
+		response.sendRedirect("/");
 		users.save(requested);
 		model.addAttribute("user", user);
 		return "home";
@@ -44,7 +48,7 @@ public class RequestController {
 	@RequestMapping(path="/accept", method=RequestMethod.GET)
 	public String accept(Model model,
 			@RequestParam("username") String username,
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Cookie[] cookies = request.getCookies();
 		User user = CookieController.getInstance().getUser(cookies, users);
 		if (user == null) return "login";
@@ -60,6 +64,7 @@ public class RequestController {
 			chats.save(chat);
 		}
 		user.getRequests().remove(requester.getUsername());
+		response.sendRedirect("/");
 		users.save(user);
 		model.addAttribute("user", user);
 		return "home";
@@ -68,13 +73,14 @@ public class RequestController {
 	@RequestMapping(path="/reject", method=RequestMethod.GET)
 	public String reject(Model model,
 			@RequestParam("username") String username,
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Cookie[] cookies = request.getCookies();
 		User user = CookieController.getInstance().getUser(cookies, users);
 		if (user == null) return "login";
 		User requester = users.findByUsername(username);
 		user.getRequests().remove(requester.getUsername());
 		users.save(user);
+		response.sendRedirect("/");
 		model.addAttribute("user", user);
 		return "home";
 	}
@@ -82,7 +88,7 @@ public class RequestController {
 	@RequestMapping(path="/unfriend",method=RequestMethod.GET)
 	public String unfriend(Model model,
 			@RequestParam("username") String username,
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Cookie[] cookies = request.getCookies();
 		User user = CookieController.getInstance().getUser(cookies, users);
 		if (user == null) return "login";
@@ -93,6 +99,7 @@ public class RequestController {
 			unfriended.getChats().remove(user.getUsername());
 			users.save(unfriended);
 		}
+		response.sendRedirect("/");
 		model.addAttribute("user",user);
 		return "home";
 	}

@@ -1,5 +1,6 @@
 package com.haranku16.controllers;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 
 import javax.servlet.http.Cookie;
@@ -23,10 +24,11 @@ public class UserController {
 	UserRepository users;
 	
 	@RequestMapping(path="/login", method=RequestMethod.GET) 
-	public String login(Model model, HttpServletRequest request) {
+	public String login(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Cookie[] cookies = request.getCookies();
 		User user = CookieController.getInstance().getUser(cookies, users);
 		if (user == null) return "login";
+		response.sendRedirect("/");
 		model.addAttribute("user", user);
 		return "home";
 	}
@@ -35,10 +37,11 @@ public class UserController {
 	public String login(Model model, 
 			@RequestParam("username") String username,
 			@RequestParam("password") String password,
-			HttpServletRequest request, HttpServletResponse response) {
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Cookie[] cookies = request.getCookies();
 		User user = CookieController.getInstance().getUser(cookies, users);
 		if (user != null) {
+			response.sendRedirect("/");
 			model.addAttribute("user",user);
 			return "home";
 		}
@@ -72,10 +75,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(path="/register", method=RequestMethod.GET) 
-	public String register(Model model, HttpServletRequest request) {
+	public String register(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Cookie[] cookies = request.getCookies();
 		User user = CookieController.getInstance().getUser(cookies, users);
 		if (user == null) return "register";
+		response.sendRedirect("/");
 		model.addAttribute("user", user);
 		return "home";
 	}
@@ -86,10 +90,11 @@ public class UserController {
 			@RequestParam("password") String password,
 			@RequestParam("password_retype") String retype,
 			@RequestParam("firstname") String firstname,
-			@RequestParam("lastname") String lastname, HttpServletRequest request) {
+			@RequestParam("lastname") String lastname, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Cookie[] cookies = request.getCookies();
 		User user = CookieController.getInstance().getUser(cookies, users);
 		if (user != null) {
+			response.sendRedirect("/");
 			model.addAttribute("user", user);
 			return "home";
 		}

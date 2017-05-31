@@ -30,6 +30,12 @@ public class User {
 		this.sessions = sessions;
 	}
 	/**
+	 * @return the full name
+	 */
+	public String getFullname() {
+		return firstname + " " + lastname;
+	}
+	/**
 	 * @return the username
 	 */
 	public String getUsername() {
