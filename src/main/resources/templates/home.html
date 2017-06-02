@@ -88,7 +88,7 @@
 </ul>
 <ul th:unless="${user.getRequests().size() > 0}" id="dropdown1" class="dropdown-content collection"><li><span class="title">No requests :(</span></li></ul>
         
-    <ul class="collection" th:each="friendDateTuple : ${friendDateTuples}">
+    <ul class="collection" th:each="friendDateTuple : ${friendDateTuples}" style = "margin: 0px;">
     <li class="collection-item avatar">
       <i class="material-icons circle blue">person</i>
       <span class="title" style = "font-weight: bold;" th:text="${friendDateTuple.getFriend().getFullname()}"/>
